@@ -77,7 +77,22 @@ char pos[50];
 uint32_t count;
 uint32_t sec;
 uint32_t min;
-uint16_t map[100][100];
+uint16_t fox[13][15] = { {0xFFFF,0xFFFF,0xFFFF,0x0000,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0x0000,0xFFFF,0xFFFF,0xFFFF},
+                        {0xFFFF,0xFFFF,0x0000,0xFFFF,0x0000,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0x0000,0xFFFF,0x0000,0xFFFF,0xFFFF},
+												{0xFFFF,0xFFFF,0x0000,0xFFFF,0xF3C0,0x0000,0xFFFF,0xFFFF,0xFFFF,0x0000,0xF3C0,0xFFFF,0x0000,0xFFFF,0xFFFF},
+												{0xFFFF,0xFFFF,0x0000,0xFFFF,0xF3C0,0xF3C0,0x0000,0x0000,0x0000,0xF3C0,0xF3C0,0xFFFF,0x0000,0xFFFF,0xFFFF},
+												{0xFFFF,0xFFFF,0x0000,0xFFFF,0x0000,0x0000,0xF3C0,0xF3C0,0xF3C0,0x0000,0x0000,0xFFFF,0x0000,0xFFFF,0xFFFF},
+												{0xFFFF,0xFFFF,0x0000,0x0000,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0x0000,0x0000,0xFFFF,0xFFFF},
+												{0xFFFF,0xFFFF,0x0000,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0x0000,0xFFFF,0xFFFF},
+												{0xFFFF,0xFFFF,0x0000,0xF3C0,0x0000,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0x0000,0xF3C0,0x0000,0xFFFF,0xFFFF},
+												{0xFFFF,0x0000,0xF3C0,0xF3C0,0x0000,0xF3C0,0x0000,0x0000,0x0000,0xF3C0,0x0000,0xF3C0,0xF3C0,0x0000,0xFFFF},
+												{0xFFFF,0x0000,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xFFFF,0x0000,0xFFFF,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0x0000,0xFFFF},
+												{0x0000,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0x0000},
+												{0xFFFF,0x0000,0x0000,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0xFFFF},
+												{0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0xFFFF,0xFFFF,0xFFFF}
+												
+
+};
 
 /* USER CODE END PFP */
 
@@ -86,6 +101,7 @@ static void drawCircle(void);
 static void set_map(void);
 static void test_offset(void);
 static void hue_test(void);
+static void test_fox(void);
 
 /* USER CODE END 0 */
 
@@ -118,7 +134,7 @@ int main(void)
 	sprintf(time, "      %d:%d        ",min,sec);
 	LCD_Setup();
   //LCD_Clear(0xB08E);
-	hue_test();
+	test_fox();
 
   
   /* USER CODE END 2 */
@@ -225,9 +241,9 @@ static void MX_TIM1_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 72-1;
+  htim1.Init.Prescaler = 0;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 1000-1;
+  htim1.Init.Period = 0;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
@@ -315,8 +331,8 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOE_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
 
   /*Configure GPIO pins : PE3 PE4 */
   GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4;
@@ -329,6 +345,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD11 PD12 PD13 PD14 
+                           PD15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14 
+                          |GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC8 */
   GPIO_InitStruct.Pin = GPIO_PIN_8;
@@ -410,32 +434,26 @@ void gen_FiveRing(void){
 	drawCircle();
 
 }
-void set_mapZ(void){
-   for(int i=0;i>100;i++){
-	     for(int j=0;j>100;j++){		 
-			   map[i][j]=0;
-			 }
-	 }
+void test_fox(){
+	   
+     for(int i=0;i<=140;i = i+10){
+	     for(int j=0;j<=120;j= j+10){	
+			  test(i,j,fox[j/10][i/10]);
+
+		 }
  }
 
 
 
-void set_map(void){
-	 set_mapZ();
-   for(int i=0;i>100;i++){
-	     for(int j=0;j>100;j++){
-			   map[i][j] = rand() % 5000;
-			 }
-	 }
 }
 
 void test_offset(){
  
-	 test(80,109,0x580);
-	 test(80,218,0x580);
-	 test(160,80,0x580);
-	 test(160,160,0x580);
-   test(160,240,0x580);
+	 test50(80,109,0x580);
+	 test50(80,218,0x580);
+	 test50(160,80,0x580);
+	 test50(160,160,0x580);
+   test50(160,240,0x580);
 
 }
 void hue_test(){
