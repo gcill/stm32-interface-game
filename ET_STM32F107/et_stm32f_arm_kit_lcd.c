@@ -886,9 +886,9 @@ void draw_map(uint16_t map[100][100]){
 
 void test(uint8_t offsetX,uint16_t offsetY,uint16_t cc){
 
-     for(int i=0+offsetX;i<10+offsetX;i++){
-	     for(int j=0+offsetY;j<10+offsetY;j++){		 
-			LCD_SetCursor(j, i);
+     for(int i=0+offsetX;i<=3+offsetX;i++){
+	     for(int j=0+offsetY;j<=3+offsetY;j++){		 
+			LCD_SetCursor(i, j);
 			LCD_WriteCommand(0x2C);
       LCD_WriteData16(cc);
 

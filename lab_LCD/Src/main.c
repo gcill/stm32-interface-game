@@ -59,6 +59,8 @@ uint32_t count;
 uint32_t sec;
 uint32_t min;
 uint16_t hue[20];
+int mole[5] ={0,0,0,0,0};
+int score = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,10 +91,24 @@ uint16_t fox[13][15] = { {0xFFFF,0xFFFF,0xFFFF,0x0000,0xFFFF,0xFFFF,0xFFFF,0xFFF
 												{0xFFFF,0x0000,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xFFFF,0x0000,0xFFFF,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0x0000,0xFFFF},
 												{0x0000,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xF3C0,0xF3C0,0xF3C0,0xF3C0,0x0000},
 												{0xFFFF,0x0000,0x0000,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0xFFFF},
-												{0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0xFFFF,0xFFFF,0xFFFF}
-												
+												{0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0xFFFF,0xFFFF,0xFFFF} };
+uint16_t too[15][15] = {  
+    { 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 },
+    { 0x0000,0xBBEB,0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000,0x0000,0xBBEB,0x0000 },
+    { 0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000,0x0000 },	
+    { 0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000 },
+    { 0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000 },
+    { 0x0000,0xBBEB,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0xBBEB,0x0000 },
+    { 0x0000,0xBBEB,0x0000,0x0000,0xBBEB,0xBBEB,0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0x0000,0x0000,0xBBEB,0x0000 },
+    { 0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000 },	
+    { 0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0xBBEB,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000 },	
+    { 0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0xBBEB,0xBBEB,0xBBEB,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000 },
+    { 0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000 },
+    { 0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000 },
+    { 0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0x0000,0xE5F2,0xE5F2,0xE5F2,0x0000,0xBBEB,0xBBEB,0x0000,0x0000,0x0000 },
+    { 0x0000,0x0000,0xBBEB,0x0000,0x0000,0xE5F2,0xE5F2,0xE5F2,0xE5F2,0xE5F2,0x0000,0x0000,0xBBEB,0x0000,0x0000 },
+    { 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 }  };
 
-};
 
 /* USER CODE END PFP */
 
@@ -100,8 +116,10 @@ uint16_t fox[13][15] = { {0xFFFF,0xFFFF,0xFFFF,0x0000,0xFFFF,0xFFFF,0xFFFF,0xFFF
 static void drawCircle(void);
 static void set_map(void);
 static void test_offset(void);
+static void control(void);
 static void hue_test(void);
-static void test_fox(void);
+static void test_mole(int offsetx, int offsety);
+static void test_clear(int offset, int offsety);
 
 /* USER CODE END 0 */
 
@@ -134,7 +152,7 @@ int main(void)
 	sprintf(time, "      %d:%d        ",min,sec);
 	LCD_Setup();
   //LCD_Clear(0xB08E);
-	test_fox();
+
 
   
   /* USER CODE END 2 */
@@ -143,13 +161,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		
-
+		 control();
+		 
+			
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-
-  }
+	}
+  
   /* USER CODE END 3 */
 
 }
@@ -333,6 +352,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pins : PE3 PE4 */
   GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4;
@@ -340,8 +360,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PE5 PE6 PE7 */
-  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+  /*Configure GPIO pins : PE5 PE6 PE7 PE8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
@@ -360,6 +380,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PA8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   /*Configure GPIO pin : PD7 */
   GPIO_InitStruct.Pin = GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -367,7 +393,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);
@@ -434,17 +460,23 @@ void gen_FiveRing(void){
 	drawCircle();
 
 }
-void test_fox(){
+void test_mole(int offsetx,int offsety){
 	   
-     for(int i=0;i<=140;i = i+10){
-	     for(int j=0;j<=120;j= j+10){	
-			  test(i,j,fox[j/10][i/10]);
+     for(int i=0;i<45;i = i+3){
+	     for(int j=0;j<45;j= j+3){	
+			  test(j+offsetx,i+offsety,too[j/3][i/3]);
 
 		 }
  }
+}
+void test_clear(int offsetx, int offsety){
+	   
+     for(int i=0;i<45;i = i+3){
+	     for(int j=0;j<45;j= j+3){	
+			  test(j+offsetx,i+offsety,0x0000);
 
-
-
+		 }
+ }
 }
 
 void test_offset(){
@@ -454,6 +486,69 @@ void test_offset(){
 	 test50(160,80,0x580);
 	 test50(160,160,0x580);
    test50(160,240,0x580);
+
+}
+void control(){
+   		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_11) == GPIO_PIN_RESET && mole[0] == 0  ){
+					 
+	         test_mole(0,0);
+			     mole[0] = 1;
+			
+		}
+		else if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_11) == GPIO_PIN_RESET && mole[0] == 1  ){  // mole number 1
+			
+			     test_clear(0,0);
+			     mole[0] = 0;
+			
+		}
+		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_12) == GPIO_PIN_RESET && mole[1] == 0  ){
+			
+			     test_mole(80,218);
+			     mole[1] = 1;
+			
+		}
+		else if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_12) == GPIO_PIN_RESET && mole[1] == 1  ){  // mole number 2
+			
+			     test_clear(80,218);
+			     mole[1] = 0;
+			
+		}
+		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_13) == GPIO_PIN_RESET && mole[2] == 0  ){
+			
+			     test_mole(160,80);
+			     mole[2] = 1;
+			
+		}
+		else if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_13) == GPIO_PIN_RESET && mole[2] == 1  ){   // mole number 3
+			
+			     test_clear(160,80);
+			     mole[2] = 0;
+			
+		}
+		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_14) == GPIO_PIN_RESET && mole[3] == 0  ){
+			
+			     test_mole(160,160);
+			     mole[3] = 1;
+			
+		}
+		else if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_14) == GPIO_PIN_RESET && mole[3] == 1  ){   // mole number 4
+			
+			     test_clear(160,160);
+			     mole[3] = 0;
+			
+		}
+		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_15) == GPIO_PIN_RESET && mole[4] == 0  ){
+			
+			     test_mole(160,240);
+			     mole[4] = 1;
+			
+		}
+		else if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_15) == GPIO_PIN_RESET && mole[4] == 1  ){   // mole number 5
+			
+			     test_clear(160,240);
+			     mole[4] = 0;
+			
+		}
 
 }
 void hue_test(){

@@ -591,12 +591,12 @@ ARM Macro Assembler    Page 10
 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=lab_lcd\startup_stm32f107xc.d -olab_lcd\startup_stm32f107xc.o -I"D
-:\com interface\lab_LCD\MDK-ARM\RTE" -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSI
-S\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.0.0\Device\Include --prede
-fine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VER
-SION SETA 517" --predefine="_RTE_ SETA 1" --predefine="STM32F10X_CL SETA 1" --l
-ist=startup_stm32f107xc.lst startup_stm32f107xc.s
+ork --depend=.\lab_lcd\startup_stm32f107xc.d -o.\lab_lcd\startup_stm32f107xc.o 
+-ID:\github\stm32-interface-game\lab_LCD\MDK-ARM\RTE -IC:\Keil_v5\ARM\PACK\ARM\
+CMSIS\4.5.0\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.0.0\Device
+\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefin
+e="__UVISION_VERSION SETA 517" --predefine="_RTE_ SETA 1" --predefine="STM32F10
+X_CL SETA 1" --list=startup_stm32f107xc.lst startup_stm32f107xc.s
 
 
 
