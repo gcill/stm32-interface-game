@@ -40,6 +40,8 @@ extern uint32_t count;
 extern uint32_t sec;
 extern uint32_t min;
 extern UART_HandleTypeDef huart2;
+extern uint32_t timeshow;
+extern uint32_t gametime;
 
 /* USER CODE END 0 */
 
@@ -200,10 +202,14 @@ void TIM1_UP_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_IRQn 1 */
 	count++;
+	timeshow++;
 
 	if(count%1000 ==0) sec++;
 	min = count/60000;
-	if(sec==60) sec=0;
+	if(sec==60){ 
+	    sec=0;
+		  gametime--;
+	}
 
   /* USER CODE END TIM1_UP_IRQn 1 */
 }

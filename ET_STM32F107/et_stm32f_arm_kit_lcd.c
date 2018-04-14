@@ -884,13 +884,13 @@ void draw_map(uint16_t map[100][100]){
 	 }
 }
 
-void test(uint8_t offsetX,uint16_t offsetY,uint16_t cc){
+void draw(uint8_t offsetX,uint16_t offsetY,uint16_t color,uint8_t pixsize){
 
-     for(int i=0+offsetX;i<=3+offsetX;i++){
-	     for(int j=0+offsetY;j<=3+offsetY;j++){		 
+     for(int i=0+offsetX;i<=pixsize+offsetX;i++){
+	     for(int j=0+offsetY;j<=pixsize+offsetY;j++){		 
 			LCD_SetCursor(i, j);
 			LCD_WriteCommand(0x2C);
-      LCD_WriteData16(cc);
+      LCD_WriteData16(color);
 
 			 }
 	 }
