@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\lab_LCD\lab_LCD.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\lab_LCD\lab_LCD.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Tue Apr 17 00:30:15 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Tue Apr 17 00:33:16 2018
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -934,15 +934,17 @@ Global Symbols
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_WriteCommand
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetCursor
 </UL>
-<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_moleDie
+<BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_moleDie
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_mole
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_hole
 </UL>
 
-<P><STRONG><a name="[47]"></a>main</STRONG> (Thumb, 276 bytes, Stack size 24 bytes, main.o(i.main))
+<P><STRONG><a name="[47]"></a>main</STRONG> (Thumb, 454 bytes, Stack size 24 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = main &rArr; gameplay &rArr; control &rArr; draw_moleDie &rArr; draw &rArr; LCD_SetCursor &rArr; LCD_WriteData &rArr; HAL_SPI_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup
+<BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetTextColor
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetBackColor
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DisplayStringLine

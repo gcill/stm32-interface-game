@@ -301,7 +301,7 @@ int main(void)
   {  
 		if(state == 0){
 			
-		   //draw_title(0,0,16,32);
+		   draw_title(0,0,16,32);
 			 LCD_DisplayStringLine(Line7,"     Prees any key");
 			 state = 1 ;
 			 LCD_SetTextColor(Black);
@@ -312,7 +312,7 @@ int main(void)
 		if(state == 2 ){
 			  
 			
-		    //draw_background(0,0,48,64);
+		    draw_background(0,0,48,64);
 	      hole_init();
 			  state = 3;
 		
