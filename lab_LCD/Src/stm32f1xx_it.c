@@ -355,8 +355,7 @@ void TIM1_UP_IRQHandler(void)
 			 }
 		   else if(state == 3) {
 				 gametime--;
-		     sprintf(str, "time : %d ",gametime);
-		     LCD_DisplayStringLine(Line8,str);
+
 			 }
 		   
 	}
@@ -381,38 +380,9 @@ void EXTI15_10_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_15);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
   
-	if( mole[0] == 1  ){
-					 
-	    isPress[0] = 1;
-			
-		}
 
-		if( mole[1] == 1  ){
-			
-			 isPress[1] = 1;
-			
-		}
-
-		if(  mole[2] == 1  ){
-			
-			 isPress[2] = 1;
-			
-		}
-
-		if( mole[3] == 1  ){
-			
-			  isPress[3] = 1;
-			
-		}
-
-		if( mole[4] == 1 ){
-			
-			   
-			  isPress[4] = 1;   
-			
-		}
 		char dec[10];
-		sprintf(dec,"%d:%d %d %d %d \r", isPress[0], isPress[1], isPress[2], isPress[3], isPress[4]);
+		sprintf(dec,"%d:%d %d %d %d \r", mole[0], mole[1], mole[2], mole[3], mole[4]);
 	  while(__HAL_UART_GET_FLAG(&huart2,UART_FLAG_TC)==RESET){} 
 		HAL_UART_Transmit(&huart2, (uint8_t*) dec, strlen(dec),1000); 
 			

@@ -61,7 +61,7 @@ uint32_t count;
 uint32_t sec;
 uint32_t min;
 uint16_t hue[20];
-int mole[5] ={0,0,0,0,0};
+
 int isPress[5] = {0,0,0,0,0};
 int score = 0;
 int state = 0 ;
@@ -72,12 +72,13 @@ int state = 0 ;
 // state 4 : clear screen
 // state 5 : gameover
 int isDrawTitle = 0;
-uint32_t timeshow[5] = {0,200,500,900,1000};
-uint32_t gametime = 59;
-uint32_t temptimeshow[5] = {0,880,600,950,1100};
+uint32_t timeshow[5] = {0,0,0,0,0};
+uint32_t gametime = 1000;
+uint32_t temptimeshow[5] = {0,0,0,0,0};
 int location[5] = {0,1,2,3,4};
 uint8_t locationX[5]= {80,80,160,160,160};
 uint16_t locationY[5] = {109,218,80,160,240};
+int mole[5] ={0,0,0,0,0};
 char str[20];
 /* USER CODE END PV */
 
@@ -300,7 +301,7 @@ int main(void)
   {  
 		if(state == 0){
 			
-		   draw_title(0,0,16,32);
+		   //draw_title(0,0,16,32);
 			 LCD_DisplayStringLine(Line7,"     Prees any key");
 			 state = 1 ;
 			 LCD_SetTextColor(Black);
@@ -311,7 +312,7 @@ int main(void)
 		if(state == 2 ){
 			  
 			
-		    draw_background(0,0,48,64);
+		    //draw_background(0,0,48,64);
 	      hole_init();
 			  state = 3;
 		
@@ -673,8 +674,7 @@ void control(){
 			     draw_hole(locationX[0],locationY[0],19,19);
 			     isPress[0] = 0;
 				   score++;
-			     sprintf(str, "score : %d ",score);
-		       LCD_DisplayStringLine(Line8,str);
+			 
 			
 		}
 
@@ -685,8 +685,7 @@ void control(){
 			     draw_hole(locationX[1],locationY[1],19,19);
 		     	 isPress[1] = 0;
 			     score++;
-			     sprintf(str, "score : %d ",score);
-		       LCD_DisplayStringLine(Line8,str);
+			 
 			
 		}
 
@@ -697,8 +696,7 @@ void control(){
 			     isPress[2] = 0;
 			     mole[2] = 0;
 		     	 score++; 
-			     sprintf(str, "score : %d ",score);
-		       LCD_DisplayStringLine(Line8,str);
+			 
 			
 		}
 
@@ -709,8 +707,7 @@ void control(){
 			     draw_hole(locationX[3],locationY[3],19,19);
 			     isPress[3] = 0;
 			     score++;
-			     sprintf(str, "score : %d ",score);
-		       LCD_DisplayStringLine(Line8,str);
+	
 			
 		}
 
@@ -721,8 +718,7 @@ void control(){
 			     mole[4] = 0;
 			     isPress[4] = 0;
 			     score++;
-			     sprintf(str, "score : %d ",score);
-		       LCD_DisplayStringLine(Line8,str);
+			
 			     
 			
 		}
@@ -765,35 +761,35 @@ void hue_draw(){
 
 }
 void gameplay(){
-    		 if(mole[0] == 0){                                // mole number 1
 	
+
+	   if(mole[0] == 0){                                  // mole number 1
+			   
 			   temptimeshow[0] = rand()%2000+1000;
 			   timeshow[0] = 0;
 			   draw_mole(locationX[0],locationY[0],15,15);
 			   mole[0] = 1;
 		 }
-		 if(timeshow[0] >= temptimeshow[0]){
+		 if(timeshow[0] >= temptimeshow[2]){
 			 
 		     mole[0] = 0 ;
 			   draw_hole(locationX[0],locationY[0],19,19);
 			  
 		 }
      control();
-		 
-		  if(mole[1] == 0){                                 // mole number 2
-
+		 if(mole[1] == 0){                                    // mole number 2
+			  
 			   temptimeshow[1] = rand()%2000+1000;
 			   timeshow[1] = 0;
 			   draw_mole(locationX[1],locationY[1],15,15);
 			   mole[1] = 1;
 		 }
-		 if(timeshow[1] >= temptimeshow[1]){
+		 if(timeshow[1] >= temptimeshow[3]){
 			 
-		     mole[0] = 0 ;
+		     mole[1] = 0 ;
 			   draw_hole(locationX[1],locationY[1],19,19);
 			  
 		 }
-		 control();
 		  if(mole[2] == 0){                                  // mole number 3
 			   
 			   temptimeshow[2] = rand()%2000+1000;
@@ -837,8 +833,11 @@ void gameplay(){
 			   draw_hole(locationX[4],locationY[4],19,19);
 			  
 		 }
+		
 		 
 		 control();
+		 sprintf(str, "score:%d time :%d  ",score,gametime);
+		 LCD_DisplayStringLine(Line8,str);
 		 
 
 
