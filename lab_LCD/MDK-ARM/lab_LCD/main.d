@@ -32,3 +32,4 @@
 .\lab_lcd\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\lab_lcd\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\lab_lcd\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+.\lab_lcd\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

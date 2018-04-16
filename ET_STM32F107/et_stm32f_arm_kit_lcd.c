@@ -624,7 +624,7 @@ void LCD_WriteData(uint8_t GLCD_Data)
   HAL_GPIO_Init(LCD_SPI_GPIO_PORT, &GPIO_InitStruct);
 	
 	//
-	HAL_GPIO_WritePin(LCD_SPI_GPIO_PORT, LCD_SPI_MOSI_PIN, GPIO_PIN_SET);												// MOSI = Low(Command)	  	
+	HAL_GPIO_WritePin(LCD_SPI_GPIO_PORT, LCD_SPI_MOSI_PIN, GPIO_PIN_SET);												  // MOSI = Low(Command)	  	
 	HAL_GPIO_WritePin(LCD_SPI_GPIO_PORT, LCD_SPI_SCK_PIN, GPIO_PIN_RESET);												// SCK = Low(Default)
 	HAL_GPIO_WritePin(LCD_CS_GPIO_PORT, LCD_CS_GPIO_PIN, GPIO_PIN_RESET);													// CS = Low
 	HAL_GPIO_WritePin(LCD_SPI_GPIO_PORT, LCD_SPI_SCK_PIN, GPIO_PIN_SET);													// SCK = High(Strobe D/C)

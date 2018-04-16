@@ -29,3 +29,5 @@
 .\lab_lcd\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 .\lab_lcd\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 .\lab_lcd\stm32f1xx_it.o: ../Inc/stm32f1xx_it.h
+.\lab_lcd\stm32f1xx_it.o: ..\..\ET_STM32F107\et_stm32f_arm_kit_lcd.h
+.\lab_lcd\stm32f1xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

@@ -40,6 +40,7 @@
 #include <string.h> 
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
 /* USER CODE END Includes */
 
@@ -61,15 +62,23 @@ uint32_t sec;
 uint32_t min;
 uint16_t hue[20];
 int mole[5] ={0,0,0,0,0};
+int isPress[5] = {0,0,0,0,0};
 int score = 0;
-int isstart = 0;
+int state = 0 ;
+// state 0 : title 
+// state 1 : wait for Button Press
+// state 2 : prerender background
+// state 3 : gameplay
+// state 4 : clear screen
+// state 5 : gameover
 int isDrawTitle = 0;
-uint32_t timeshow = 0;
+uint32_t timeshow[5] = {0,200,500,900,1000};
 uint32_t gametime = 59;
-int temptimeshow = 0;
-int location = 0;
+uint32_t temptimeshow[5] = {0,880,600,950,1100};
+int location[5] = {0,1,2,3,4};
 uint8_t locationX[5]= {80,80,160,160,160};
 uint16_t locationY[5] = {109,218,80,160,240};
+char str[20];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -104,8 +113,8 @@ uint16_t fox[13][15] = {
 	  {0xFFFF,0xFFFF,0xFFFF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0xFFFF,0xFFFF,0xFFFF} 
 };
 
-uint16_t too[15][15] = {  
-    { 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 },
+uint16_t molepic[15][15] = {  
+    { 0x6223,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x6223 },
     { 0x0000,0xBBEB,0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000,0x0000,0xBBEB,0x0000 },
     { 0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000,0x0000 },	
     { 0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000 },
@@ -119,8 +128,8 @@ uint16_t too[15][15] = {
     { 0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0xBBEB,0xBBEB,0x0000,0x0000 },
     { 0x0000,0x0000,0x0000,0xBBEB,0xBBEB,0x0000,0xE5F2,0xE5F2,0xE5F2,0x0000,0xBBEB,0xBBEB,0x0000,0x0000,0x0000 },
     { 0x0000,0x0000,0xBBEB,0x0000,0x0000,0xE5F2,0xE5F2,0xE5F2,0xE5F2,0xE5F2,0x0000,0x0000,0xBBEB,0x0000,0x0000 },
-    { 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000 }  };
-uint16_t title[24][32] ={ 
+    { 0x6223,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x6223 }  };
+uint16_t title[16][32] ={ 
 	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
 	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
 	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x7205, 0x0000, 0x0000, 0x0000, 0x7205, 0x0000, 0xFC26, 0x0000, 0x0000, 0xFC26, 0x0000, 0x7205, 0x7205, 0x7205, 0x7205, 0x0000, 0xFC26, 0xFC26, 0xFC26, 0xFC26, 0x0000, 0x0000, 0x0000, 0x0000},
@@ -137,14 +146,7 @@ uint16_t title[24][32] ={
 	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
   {0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xBBEB, 0x0000, 0xE5F2, 0x0000, 0xBBEB, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
 	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xBBEB, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xBBEB, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-  {0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-  {0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-	{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000} 
+	
 };
 uint16_t moleDie[15][15] = { 
 {0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
@@ -244,7 +246,9 @@ uint16_t hole[19][19] = {
 static void drawCircle(void);
 static void set_map(void);
 static void draw_offset(void);
-static void control(void);
+static void gameplay(void);
+static void gameover(void);
+void control(void);
 static void hue_draw(void);
 static void hole_init(void);
 static void draw_mole(int offsetx, int offsety,uint8_t sizeX,uint16_t sizeY);
@@ -281,15 +285,11 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim1);
-	char str[20]  = "chayanin chanthanond";
-	char time[20];
-	sprintf(time, "   %d",score);
 	LCD_Setup();
 	LCD_SetTextColor(White);
 	LCD_SetBackColor(Black);
-	//draw_hole(0,0,19,19);
-  draw_background(0,0,48,64);
-	hole_init();
+  //draw_background(0,0,48,64);
+	//hole_init();
 
   
   /* USER CODE END 2 */
@@ -298,26 +298,44 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {  
-		
-		 if(mole[0] == 0){
-			   location = rand()%5;
-			   temptimeshow = rand()%2000+1000;
-			   timeshow = 0;
-			   draw_mole(locationX[location],locationY[location],15,15);
-			   mole[0] = 1;
-		 }
-		 if(count >= temptimeshow){
-			 
-		     mole[0] = 0 ;
-			   draw_hole(locationX[location],locationY[location],19,19);
-			  
-		 }
-		 control();
-		 sprintf(time, " score :  %d",score);
-		 LCD_DisplayStringLine(Line9,time);
-		 
-		 
+		if(state == 0){
 			
+		   draw_title(0,0,16,32);
+			 LCD_DisplayStringLine(Line7,"     Prees any key");
+			 state = 1 ;
+			 LCD_SetTextColor(Black);
+	     LCD_SetBackColor(0x6223);
+			 gametime = 60;
+		  
+		}
+		if(state == 2 ){
+			  
+			
+		    draw_background(0,0,48,64);
+	      hole_init();
+			  state = 3;
+		
+		}
+		if(state == 3){
+			
+			 gameplay();
+			
+		}
+		if(state == 4 ){
+			
+			LCD_Clear(Black);
+			state = 5;
+
+		}
+		
+		if(state == 5 ){
+			
+
+		  gameover();
+			
+		}
+		
+		
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -504,6 +522,7 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOE_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -520,11 +539,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PB0 PB1 PB2 PB3 
+                           PB4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3 
+                          |GPIO_PIN_4;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure GPIO pins : PD11 PD12 PD13 PD14 
                            PD15 */
   GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14 
                           |GPIO_PIN_15;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
@@ -555,6 +582,25 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_7, GPIO_PIN_RESET);
 
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI2_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI2_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 2, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+
 }
 
 /* USER CODE BEGIN 4 */
@@ -569,7 +615,7 @@ void draw_mole(int offsetx,int offsety,uint8_t sizeX,uint16_t sizeY){
 	   
      for(int i=0;i<sizeY*3;i = i+3){
 	     for(int j=0;j<sizeX*3;j= j+3){	
-			  draw(j+offsetx-30,i+offsety-30,too[j/3][i/3],3);
+			  draw(j+offsetx-30,i+offsety-30,molepic[j/3][i/3],3);
 
 		 }
  }
@@ -619,44 +665,64 @@ void draw_hole(int offsetx,int offsety,uint8_t sizeX,uint16_t sizeY){
  }
 }
 void control(){
-   		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_11) == GPIO_PIN_RESET && mole[0] == 1  ){
+	
+   	if( isPress[0] == 1  && mole[0] == 1  ){
 					 
-	         draw_moleDie(locationX[0],locationX[0],15,15);
+	         draw_moleDie(locationX[0],locationY[0],15,15);
 			     mole[0] = 0;
-			     draw_hole(locationX[0],locationX[0],19,19);
+			     draw_hole(locationX[0],locationY[0],19,19);
+			     isPress[0] = 0;
+				   score++;
+			     sprintf(str, "score : %d ",score);
+		       LCD_DisplayStringLine(Line8,str);
 			
 		}
 
-		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_12) == GPIO_PIN_RESET && mole[0] == 1  ){
+		if( isPress[1] == 1  && mole[1] == 1  ){
 			
 			     draw_moleDie(locationX[1],locationY[1],15,15);
-			     mole[0] = 0;
-			     draw_hole(locationX[1],locationX[1],19,19);
+			     mole[1] = 0;
+			     draw_hole(locationX[1],locationY[1],19,19);
+		     	 isPress[1] = 0;
+			     score++;
+			     sprintf(str, "score : %d ",score);
+		       LCD_DisplayStringLine(Line8,str);
 			
 		}
 
-		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_13) == GPIO_PIN_RESET && mole[0] == 1  ){
+		if( isPress[2] == 1  && mole[2] == 1  ){
 			
 			     draw_moleDie(locationX[2],locationY[2],15,15);
-			     mole[0] = 0;
-			     draw_hole(locationX[2],locationX[2],19,19);
+			     draw_hole(locationX[2],locationY[2],19,19);
+			     isPress[2] = 0;
+			     mole[2] = 0;
+		     	 score++; 
+			     sprintf(str, "score : %d ",score);
+		       LCD_DisplayStringLine(Line8,str);
 			
 		}
 
-		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_14) == GPIO_PIN_RESET && mole[0] == 1  ){
+		if( isPress[3] == 1  && mole[3] == 1  ){
 			
 			     draw_moleDie(locationX[3],locationY[3],15,15);
-			     mole[0] = 0;
-			     draw_hole(locationX[3],locationX[3],19,19);
+			     mole[3] = 0;
+			     draw_hole(locationX[3],locationY[3],19,19);
+			     isPress[3] = 0;
+			     score++;
+			     sprintf(str, "score : %d ",score);
+		       LCD_DisplayStringLine(Line8,str);
 			
 		}
 
-		if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_15) == GPIO_PIN_RESET && mole[0] == 1  ){
+		if( isPress[4] == 1 && mole[4] == 1  ){
 			
-			     draw_moleDie(locationX[location],locationY[location],15,15);
-			     draw_hole(locationX[location],locationY[location],19,19);
-			     mole[0] = 0;
+			     draw_moleDie(locationX[4],locationY[4],15,15);
+			     draw_hole(locationX[4],locationY[4],19,19);
+			     mole[4] = 0;
+			     isPress[4] = 0;
 			     score++;
+			     sprintf(str, "score : %d ",score);
+		       LCD_DisplayStringLine(Line8,str);
 			     
 			
 		}
@@ -696,6 +762,94 @@ void hue_draw(){
 	draw(256,120,0xB2C5);
 	draw(256,180,0x060C);
 
+
+}
+void gameplay(){
+    		 if(mole[0] == 0){                                // mole number 1
+	
+			   temptimeshow[0] = rand()%2000+1000;
+			   timeshow[0] = 0;
+			   draw_mole(locationX[0],locationY[0],15,15);
+			   mole[0] = 1;
+		 }
+		 if(timeshow[0] >= temptimeshow[0]){
+			 
+		     mole[0] = 0 ;
+			   draw_hole(locationX[0],locationY[0],19,19);
+			  
+		 }
+     control();
+		 
+		  if(mole[1] == 0){                                 // mole number 2
+
+			   temptimeshow[1] = rand()%2000+1000;
+			   timeshow[1] = 0;
+			   draw_mole(locationX[1],locationY[1],15,15);
+			   mole[1] = 1;
+		 }
+		 if(timeshow[1] >= temptimeshow[1]){
+			 
+		     mole[0] = 0 ;
+			   draw_hole(locationX[1],locationY[1],19,19);
+			  
+		 }
+		 control();
+		  if(mole[2] == 0){                                  // mole number 3
+			   
+			   temptimeshow[2] = rand()%2000+1000;
+			   timeshow[2] = 0;
+			   draw_mole(locationX[2],locationY[2],15,15);
+			   mole[2] = 1;
+		 }
+		 if(timeshow[2] >= temptimeshow[2]){
+			 
+		     mole[2] = 0 ;
+			   draw_hole(locationX[2],locationY[2],19,19);
+			  
+		 }
+     control();
+		  if(mole[3] == 0){                                    // mole number 4
+			  
+			   temptimeshow[3] = rand()%2000+1000;
+			   timeshow[3] = 0;
+			   draw_mole(locationX[3],locationY[3],15,15);
+			   mole[3] = 1;
+		 }
+		 if(timeshow[3] >= temptimeshow[3]){
+			 
+		     mole[3] = 0 ;
+			   draw_hole(locationX[3],locationY[3],19,19);
+			  
+		 }
+     control();
+ 
+		 
+		  if(mole[4] == 0){                                    // mole number 5
+			
+			   temptimeshow[4] = rand()%2000+1000;
+			   timeshow[4] = 0;
+			   draw_mole(locationX[4],locationY[4],15,15);
+			   mole[4] = 1;
+		 }
+		 if(timeshow[4] >= temptimeshow[4]){
+			 
+		     mole[4] = 0 ;
+			   draw_hole(locationX[4],locationY[4],19,19);
+			  
+		 }
+		 
+		 control();
+		 
+
+
+}
+void gameover(){
+	
+	LCD_SetTextColor(White);
+	LCD_SetBackColor(Black);
+	sprintf(str, "     score :%d ",score);
+	LCD_DisplayStringLine(Line4,"     Game Over !!");
+	LCD_DisplayStringLine(Line5,str);
 
 }
 
