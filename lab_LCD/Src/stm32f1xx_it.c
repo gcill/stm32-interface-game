@@ -353,9 +353,11 @@ void TIM1_UP_IRQHandler(void)
        if(gametime == 0 && state == 3){ 
 			    state = 4;
 			 }
-		   else if(state == 3) gametime--;
-		 sprintf(str, "time : %d ",gametime);
-		 LCD_DisplayStringLine(Line8,str);
+		   else if(state == 3) {
+				 gametime--;
+		     sprintf(str, "time : %d ",gametime);
+		     LCD_DisplayStringLine(Line8,str);
+			 }
 		   
 	}
 	min = count/60000;
