@@ -73,12 +73,13 @@ int state = 0 ;
 // state 5 : gameover
 int isDrawTitle = 0;
 uint32_t timeshow[5] = {0,0,0,0,0};
-uint32_t gametime = 1000;
+uint32_t gametime = 59;
 uint32_t temptimeshow[5] = {0,0,0,0,0};
-int location[5] = {0,1,2,3,4};
+int locationMole[3] = {0,1,2};
+bool locationAvailable[5] = {false,false,false,false,false};
 uint8_t locationX[5]= {80,80,160,160,160};
 uint16_t locationY[5] = {109,218,80,160,240};
-int mole[5] ={0,0,0,0,0};
+int mole[5] ={0,0,0};
 char str[20];
 /* USER CODE END PV */
 
@@ -150,22 +151,24 @@ uint16_t title[16][32] ={
 	
 };
 uint16_t moleDie[15][15] = { 
-{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-{0x0000, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0x0000},
-{0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000},
-{0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000},
-{0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000},
+{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xFFFF, 0xFFFF, 0x0000, 0xFFFF, 0xFFFF, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
+{0x0000, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0xFFFF, 0xFFFF, 0xFFFF, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0x0000},
+{0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xFFFF, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000},
+{0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xFFFF, 0xFFFF, 0xFFFF, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000},
+{0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xFFFF, 0xFFFF, 0xBBEB, 0xFFFF, 0xFFFF, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000},
 {0x0000, 0xBBEB, 0x0000, 0xBBEB, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0xBBEB, 0x0000, 0xBBEB, 0x0000},
 {0x0000, 0xBBEB, 0xBBEB, 0x0000, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0x0000, 0xBBEB, 0xBBEB, 0x0000},
-{0x0000, 0xBBEB, 0x0000, 0xBBEB, 0x0000, 0xBBEB, 0xBBEB, 0x0000, 0xBBEB, 0xBBEB, 0x0000, 0xBBEB, 0x0000, 0xBBEB, 0x0000},
-{0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0xF57F, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000},
-{0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000},
-{0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000},
-{0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x0000, 0x0000},
-{0x0000, 0xBBEB, 0x0000, 0xBBEB, 0xBBEB, 0x0000, 0xE5F2, 0xE5F2, 0xE5F2, 0x0000, 0xBBEB, 0xBBEB, 0x0000, 0xBBEB, 0x0000},
+{0x0000, 0xBBEB, 0x0000, 0x46DF, 0x0000, 0xBBEB, 0xBBEB, 0x0000, 0xBBEB, 0xBBEB, 0x0000, 0x46DF, 0x0000, 0xBBEB, 0x0000},
+{0x0000, 0xBBEB, 0xBBEB, 0x46DF, 0xBBEB, 0xBBEB, 0x0000, 0xF57F, 0x0000, 0xBBEB, 0xBBEB, 0x46DF, 0xBBEB, 0xBBEB, 0x0000},
+{0x0000, 0xBBEB, 0xBBEB, 0x46DF, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0x46DF, 0xBBEB, 0xBBEB, 0x0000},
+{0x0000, 0x0000, 0xBBEB, 0x46DF, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0xBBEB, 0x46DF, 0xBBEB, 0x0000, 0x0000},
+{0x0000, 0x0000, 0xBBEB, 0x46DF, 0xBBEB, 0xBBEB, 0x0000, 0x0000, 0x0000, 0xBBEB, 0xBBEB, 0x46DF, 0xBBEB, 0x0000, 0x0000},
+{0x0000, 0xBBEB, 0x0000, 0x46DF, 0xBBEB, 0x0000, 0xE5F2, 0xE5F2, 0xE5F2, 0x0000, 0xBBEB, 0x46DF, 0x0000, 0xBBEB, 0x0000},
 {0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xE5F2, 0xE5F2, 0xE5F2, 0xE5F2, 0xE5F2, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000},
-{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000}
+{0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000} 
 };
+
+
 uint16_t background[48][64] = { 
 {0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0xB668, 0xB668,0x6223, 0x6223,0x6223, 0xB668,0xB668},
 {0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0xB668, 0xB668,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0xB668,0x6223, 0x6223,0x6223, 0x6223,0x8327, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0x6223, 0x6223,0xB668, 0xB668,0xB668, 0xB668,0xB668, 0xB668,0x6223},
@@ -331,7 +334,6 @@ int main(void)
 		
 		if(state == 5 ){
 			
-
 		  gameover();
 			
 		}
@@ -667,10 +669,11 @@ void draw_hole(int offsetx,int offsety,uint8_t sizeX,uint16_t sizeY){
 }
 void control(){
 	
-   	if( isPress[0] == 1  && mole[0] == 1  ){
+   	if( isPress[0] == 1  && locationAvailable[0]  ){
 					 
 	         draw_moleDie(locationX[0],locationY[0],15,15);
 			     mole[0] = 0;
+			     locationAvailable[0] = false;
 			     draw_hole(locationX[0],locationY[0],19,19);
 			     isPress[0] = 0;
 				   score++;
@@ -678,10 +681,11 @@ void control(){
 			
 		}
 
-		if( isPress[1] == 1  && mole[1] == 1  ){
+		if( isPress[1] == 1  && locationAvailable[1]   ){
 			
 			     draw_moleDie(locationX[1],locationY[1],15,15);
 			     mole[1] = 0;
+			     locationAvailable[1] = false;
 			     draw_hole(locationX[1],locationY[1],19,19);
 		     	 isPress[1] = 0;
 			     score++;
@@ -689,21 +693,23 @@ void control(){
 			
 		}
 
-		if( isPress[2] == 1  && mole[2] == 1  ){
+		if( isPress[2] == 1  && locationAvailable[2]   ){
 			
 			     draw_moleDie(locationX[2],locationY[2],15,15);
+			     mole[2] = 0;
+			     locationAvailable[2] = false;
 			     draw_hole(locationX[2],locationY[2],19,19);
 			     isPress[2] = 0;
-			     mole[2] = 0;
 		     	 score++; 
 			 
 			
 		}
 
-		if( isPress[3] == 1  && mole[3] == 1  ){
+		if( isPress[3] == 1  && locationAvailable[3]  ){
 			
 			     draw_moleDie(locationX[3],locationY[3],15,15);
 			     mole[3] = 0;
+			     locationAvailable[3] = false;
 			     draw_hole(locationX[3],locationY[3],19,19);
 			     isPress[3] = 0;
 			     score++;
@@ -711,11 +717,12 @@ void control(){
 			
 		}
 
-		if( isPress[4] == 1 && mole[4] == 1  ){
+		if( isPress[4] == 1 && locationAvailable[4]   ){
 			
 			     draw_moleDie(locationX[4],locationY[4],15,15);
-			     draw_hole(locationX[4],locationY[4],19,19);
 			     mole[4] = 0;
+			     locationAvailable[4] = false;
+			     draw_hole(locationX[4],locationY[4],19,19);
 			     isPress[4] = 0;
 			     score++;
 			
@@ -767,78 +774,73 @@ void gameplay(){
 			   
 			   temptimeshow[0] = rand()%2000+1000;
 			   timeshow[0] = 0;
-			   draw_mole(locationX[0],locationY[0],15,15);
+			   locationMole[0] = rand()%5;
+			   while( locationAvailable[locationMole[0]]){
+					     if(locationMole[0]==5)locationMole[0]=0;
+					     locationMole[0]++;
+			   }
+				 locationAvailable[locationMole[0]] = true;
+			   draw_mole(locationX[locationMole[0]],locationY[locationMole[0]],15,15);
 			   mole[0] = 1;
 		 }
-		 if(timeshow[0] >= temptimeshow[2]){
+		 if(timeshow[0] >= temptimeshow[0]){
 			 
 		     mole[0] = 0 ;
-			   draw_hole(locationX[0],locationY[0],19,19);
+			   locationAvailable[locationMole[0]] = false;
+			   draw_hole(locationX[locationMole[0]],locationY[locationMole[0]],19,19);
 			  
 		 }
+		 
      control();
+		 sprintf(str, "score:%d time :%d  ",score,gametime);
+		 LCD_DisplayStringLine(Line8,str);
+		 
 		 if(mole[1] == 0){                                    // mole number 2
 			  
 			   temptimeshow[1] = rand()%2000+1000;
 			   timeshow[1] = 0;
-			   draw_mole(locationX[1],locationY[1],15,15);
+			   locationMole[1] = rand()%5;
+			   while( locationAvailable[locationMole[1]]){
+					     if(locationMole[1]==5)locationMole[1]=0;
+					     locationMole[1]++;
+			   }
+				 locationAvailable[locationMole[1]] = true;
+			   draw_mole(locationX[locationMole[1]],locationY[locationMole[1]],15,15);
 			   mole[1] = 1;
 		 }
-		 if(timeshow[1] >= temptimeshow[3]){
+		 if(timeshow[1] >= temptimeshow[1]){
 			 
 		     mole[1] = 0 ;
-			   draw_hole(locationX[1],locationY[1],19,19);
-			  
+			   locationAvailable[locationMole[1]] = false;
+			   draw_hole(locationX[locationMole[1]],locationY[locationMole[1]],19,19);		  
 		 }
-		  if(mole[2] == 0){                                  // mole number 3
-			   
-			   temptimeshow[2] = rand()%2000+1000;
-			   timeshow[2] = 0;
-			   draw_mole(locationX[2],locationY[2],15,15);
-			   mole[2] = 1;
-		 }
-		 if(timeshow[2] >= temptimeshow[2]){
-			 
-		     mole[2] = 0 ;
-			   draw_hole(locationX[2],locationY[2],19,19);
-			  
-		 }
-     control();
-		  if(mole[3] == 0){                                    // mole number 4
-			  
-			   temptimeshow[3] = rand()%2000+1000;
-			   timeshow[3] = 0;
-			   draw_mole(locationX[3],locationY[3],15,15);
-			   mole[3] = 1;
-		 }
-		 if(timeshow[3] >= temptimeshow[3]){
-			 
-		     mole[3] = 0 ;
-			   draw_hole(locationX[3],locationY[3],19,19);
-			  
-		 }
-     control();
- 
-		 
-		  if(mole[4] == 0){                                    // mole number 5
-			
-			   temptimeshow[4] = rand()%2000+1000;
-			   timeshow[4] = 0;
-			   draw_mole(locationX[4],locationY[4],15,15);
-			   mole[4] = 1;
-		 }
-		 if(timeshow[4] >= temptimeshow[4]){
-			 
-		     mole[4] = 0 ;
-			   draw_hole(locationX[4],locationY[4],19,19);
-			  
-		 }
-		
 		 
 		 control();
 		 sprintf(str, "score:%d time :%d  ",score,gametime);
 		 LCD_DisplayStringLine(Line8,str);
 		 
+		  if(mole[2] == 0){                                  // mole number 3
+			   
+			   temptimeshow[2] = rand()%2000+1000;
+			   timeshow[2] = 0;
+			   locationMole[2] = rand()%5;
+			   while( locationAvailable[locationMole[2]]){
+					     if(locationMole[2]==5)locationMole[2]=0;
+					     locationMole[2]++;
+			   }
+				 locationAvailable[locationMole[2]] = true;
+			   draw_mole(locationX[locationMole[2]],locationY[locationMole[2]],15,15);
+			   mole[2] = 1;
+		 }
+		 if(timeshow[2] >= temptimeshow[2]){
+			 
+		     mole[2] = 0 ;
+			   locationAvailable[locationMole[2]] = false;
+			   draw_hole(locationX[locationMole[2]],locationY[locationMole[2]],19,19);			  
+		 }
+     control();
+		 sprintf(str, "score:%d time :%d  ",score,gametime);
+		 LCD_DisplayStringLine(Line8,str);
 
 
 }

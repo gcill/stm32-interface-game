@@ -22,47 +22,53 @@ Dialog DLL:      TCM.DLL V1.14.6.0
  
 <h2>Project:</h2>
 D:\github\stm32-interface-game\lab_LCD\MDK-ARM\lab_LCD.uvprojx
-Project File Date:  04/16/2018
+Project File Date:  04/17/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'lab_LCD'
 compiling main.c...
-../Src/main.c(619): warning:  #223-D: function "draw" declared implicitly
+../Src/main.c(621): warning:  #223-D: function "draw" declared implicitly
   			  draw(j+offsetx-30,i+offsety-30,molepic[j/3][i/3],3);
-../Src/main.c(628): warning:  #223-D: function "draw" declared implicitly
+../Src/main.c(630): warning:  #223-D: function "draw" declared implicitly
   			  draw(j+offsetx-30,i+offsety-30,0x0000,3);
-../Src/main.c(637): warning:  #223-D: function "draw" declared implicitly
+../Src/main.c(639): warning:  #223-D: function "draw" declared implicitly
   			  draw(j+offsetx,i+offsety,title[j/10][i/10],10);
-../Src/main.c(646): warning:  #223-D: function "draw" declared implicitly
+../Src/main.c(648): warning:  #223-D: function "draw" declared implicitly
   			  draw(j+offsetx-30,i+offsety-30,moleDie[j/3][i/3],3);
-../Src/main.c(655): warning:  #223-D: function "draw" declared implicitly
+../Src/main.c(657): warning:  #223-D: function "draw" declared implicitly
   			  draw(j+offsetx,i+offsety,background[j/5][i/5],5);
-../Src/main.c(663): warning:  #223-D: function "draw" declared implicitly
+../Src/main.c(665): warning:  #223-D: function "draw" declared implicitly
   			  draw(j+offsetx-36,i+offsety-36,hole[j/3][i/3],3);
-../Src/main.c(740): warning:  #223-D: function "draw" declared implicitly
+../Src/main.c(747): warning:  #223-D: function "draw" declared implicitly
    	draw(0,0,0xE228);
-../Src/main.c(840): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+../Src/main.c(796): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
   		 LCD_DisplayStringLine(
 ine8,str);
-../Src/main.c(851): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+../Src/main.c(820): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		 LCD_DisplayStringLine(
+ine8,str);
+../Src/main.c(843): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		 LCD_DisplayStringLine(
+ine8,str);
+../Src/main.c(853): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
   	LCD_DisplayStringLine(
 ine5,str);
-../Src/main.c(608): warning:  #177-D: function "drawCircle" was declared but never referenced
+../Src/main.c(610): warning:  #177-D: function "drawCircle" was declared but never referenced
   void drawCircle(void){
-../Src/main.c(248): warning:  #177-D: function "set_map" was declared but never referenced
+../Src/main.c(251): warning:  #177-D: function "set_map" was declared but never referenced
   static void set_map(void);
-../Src/main.c(249): warning:  #177-D: function "draw_offset" was declared but never referenced
+../Src/main.c(252): warning:  #177-D: function "draw_offset" was declared but never referenced
   static void draw_offset(void);
-../Src/main.c(738): warning:  #177-D: function "hue_draw" was declared but never referenced
+../Src/main.c(745): warning:  #177-D: function "hue_draw" was declared but never referenced
   void hue_draw(){
-../Src/main.c(624): warning:  #177-D: function "draw_clear" was declared but never referenced
+../Src/main.c(626): warning:  #177-D: function "draw_clear" was declared but never referenced
   void draw_clear(int offsetx, int offsety,uint8_t sizeX,uint16_t sizeY){
-../Src/main.c: 14 warnings, 0 errors
+../Src/main.c: 16 warnings, 0 errors
 linking...
-Program Size: Code=11612 RO-data=5012 RW-data=8852 ZI-data=1396  
+Program Size: Code=11692 RO-data=5012 RW-data=8868 ZI-data=1396  
 FromELF: creating hex file...
-".\lab_LCD\lab_LCD.axf" - 0 Error(s), 14 Warning(s).
+".\lab_LCD\lab_LCD.axf" - 0 Error(s), 16 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -80,7 +86,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:4.3.0
-Build Time Elapsed:  00:00:05
+Build Time Elapsed:  00:00:13
 </pre>
 </body>
 </html>

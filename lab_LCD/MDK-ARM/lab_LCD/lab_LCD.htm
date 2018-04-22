@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\lab_LCD\lab_LCD.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\lab_LCD\lab_LCD.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Tue Apr 17 00:33:16 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Sun Apr 22 20:57:18 2018
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -918,7 +918,7 @@ Global Symbols
 
 <P><STRONG><a name="[ae]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[95]"></a>control</STRONG> (Thumb, 296 bytes, Stack size 32 bytes, main.o(i.control))
+<P><STRONG><a name="[95]"></a>control</STRONG> (Thumb, 314 bytes, Stack size 32 bytes, main.o(i.control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = control &rArr; draw_moleDie &rArr; draw &rArr; LCD_SetCursor &rArr; LCD_WriteData &rArr; HAL_SPI_MspInit &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_moleDie
@@ -1023,7 +1023,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;control
 </UL>
 
-<P><STRONG><a name="[9a]"></a>gameplay</STRONG> (Thumb, 458 bytes, Stack size 40 bytes, main.o(i.gameplay))
+<P><STRONG><a name="[9a]"></a>gameplay</STRONG> (Thumb, 520 bytes, Stack size 40 bytes, main.o(i.gameplay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = gameplay &rArr; control &rArr; draw_moleDie &rArr; draw &rArr; LCD_SetCursor &rArr; LCD_WriteData &rArr; HAL_SPI_MspInit &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DisplayStringLine
@@ -1036,7 +1036,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[9c]"></a>hole_init</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, main.o(i.hole_init))
+<P><STRONG><a name="[9c]"></a>hole_init</STRONG> (Thumb, 72 bytes, Stack size 16 bytes, main.o(i.hole_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = hole_init &rArr; draw_hole &rArr; draw &rArr; LCD_SetCursor &rArr; LCD_WriteData &rArr; HAL_SPI_MspInit &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_hole
